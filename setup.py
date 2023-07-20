@@ -24,14 +24,14 @@ def read(*names, **kwargs):
 
 
 setup(
-    name='python-project',
+    name='exonviz-web',
     version='0.0.1',
     license='MIT',
     description='An example package. Generated with cookiecutter-pylibrary.',
-    long_description='Long description for your python-project',
+    long_description='Long description for your exonviz-web',
     author='Redmar van den Berg',
     author_email='Redmar@ubuntu.com',
-    url='https://github.com/redmar-van-den-berg/python-project',
+    url='https://github.com/redmar-van-den-berg/exonviz-web',
     packages=find_packages('src'),
     package_dir={'': 'src'},
     py_modules=[splitext(basename(path))[0] for path in glob('src/*.py')],
@@ -57,8 +57,8 @@ setup(
         'Topic :: Utilities',
     ],
     project_urls={
-        'Changelog': 'https://github.com/redmar-van-den-berg/python-project/blob/master/CHANGELOG.rst',
-        'Issue Tracker': 'https://github.com/redmar-van-den-berg/python-project/issues',
+        'Changelog': 'https://github.com/redmar-van-den-berg/exonviz-web/blob/master/CHANGELOG.rst',
+        'Issue Tracker': 'https://github.com/redmar-van-den-berg/exonviz-web/issues',
     },
     keywords=[
         # eg: 'keyword1', 'keyword2', 'keyword3',
@@ -77,7 +77,7 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'python-project=python_project.cli:main',
+            'exonviz-web=python_project.cli:main',
         ]
     },
 )

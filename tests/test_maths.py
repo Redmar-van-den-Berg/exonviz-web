@@ -1,4 +1,4 @@
-from python_project import maths
+from exonviz_web import maths
 
 
 def test_addition() -> None:

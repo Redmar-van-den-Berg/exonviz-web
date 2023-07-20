@@ -8,4 +8,13 @@
   <p>
     Welcome to Exonviz, try it out by clicking <a href="http://127.0.0.1:5000/draw/NG_012337.3(NM_003002.4):c.274G>T">here</a>!
   </p>
+  <p>Input a transcript name (with version!) or HGVS description below
+    <form method="POST">
+      <input name="text">
+      <input type="submit">
+    </form>
+  </p>
+  {% if session["svg"] %}
+    {{ session["svg"] | safe }}
+  {% endif %}
 {% endblock %}

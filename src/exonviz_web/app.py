@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Blueprint, Flask, render_template
 from typing import Tuple, List
 
 from exonviz.draw import draw_exons
@@ -7,6 +7,8 @@ from exonviz.exon import Exon
 
 
 app = Flask(__name__)
+bp = Blueprint("exonviz", __name__)
+app.register_blueprint(bp)
 
 
 def cache_fetch(transcript: str) -> Tuple[List[Exon], bool]:
@@ -16,7 +18,7 @@ def cache_fetch(transcript: str) -> Tuple[List[Exon], bool]:
 
 @app.route("/", methods=["GET"])
 def index() -> str:
-    return 'Try it out!: <a href="http://127.0.0.1:5000/draw/NG_012337.3(NM_003002.4):c.274G>T">Click</a>'
+    return render_template("index.html")
 
 
 @app.route("/draw/<transcript>", methods=["GET"])

@@ -1,9 +1,9 @@
 from flask import Blueprint, Flask, render_template, session, request
 from typing import Tuple, List
 
-from exonviz.draw import draw_exons
-from exonviz.cli import fetch_exons, check_input
-from exonviz.exon import Exon
+from exonviz import draw_exons
+from exonviz import fetch_exons
+from exonviz import Exon
 
 
 app = Flask(__name__)
@@ -13,11 +13,7 @@ app.register_blueprint(bp)
 
 def cache_fetch(transcript: str) -> Tuple[List[Exon], bool]:
     """Wrapper to cache calls to mutalyzer"""
-    exons : List[Exon]
-    reverse : bool
-    transcript = check_input(transcript)
-    exons, reverse = fetch_exons(transcript)
-    return exons, reverse
+    return fetch_exons(transcript)
 
 
 @app.route("/", methods=["GET"])
@@ -27,10 +23,11 @@ def index() -> str:
 
 @app.route("/", methods=["POST"])
 def index_post() -> str:
-    text = request.form['text']
+    text = request.form["text"]
     exons, reverse = cache_fetch(text)
     session["svg"] = str(draw_exons(exons, reverse))
     return render_template("index.html")
+
 
 @app.route("/draw/<transcript>", methods=["GET"])
 def draw(transcript: str) -> str:
@@ -38,6 +35,6 @@ def draw(transcript: str) -> str:
     return str(draw_exons(exons, reverse))
 
 
-if __name__ == '__main__':
-    app.secret_key = 'super secret key'
+if __name__ == "__main__":
+    app.secret_key = "super secret key"
     app.run()

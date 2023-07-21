@@ -10,10 +10,20 @@
   </p>
   <p>Input a transcript name (with version!) or HGVS description below
     <form method="POST">
-      <input name="text">
-      <input type="submit">
+      <label for="transcript">Transcript</label>
+      <br>
+      <input type="text" name="transcript" value="{{ request.form['transcript'] }}"></input>
+      <br>
+
+      <label for="height">Exon height</label>
+      <br>
+      <input type="int" name="height", value="{{ request.form.get('heigh', 20) }}"></input>
+      <br>
+
+      <button type="submit">Submit</button>
     </form>
   </p>
+
   {% if session["svg"] %}
     {{ session["svg"] | safe }}
   {% endif %}

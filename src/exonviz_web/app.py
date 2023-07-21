@@ -23,9 +23,10 @@ def index() -> str:
 
 @app.route("/", methods=["POST"])
 def index_post() -> str:
-    text = request.form["text"]
+    text = request.form["transcript"]
+    height = int(request.form["height"])
     exons, reverse = cache_fetch(text)
-    session["svg"] = str(draw_exons(exons, reverse))
+    session["svg"] = str(draw_exons(exons, reverse, height=height,))
     return render_template("index.html")
 
 

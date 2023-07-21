@@ -20,6 +20,16 @@
       <input type="int" name="height", value="{{ request.form.get('heigh', 20) }}"></input>
       <br>
 
+      <label for="gap">Exon gap size</label>
+      <br>
+      <input type="int" name="gap", value="{{ request.form.get('gap', 5) }}"></input>
+      <br>
+
+      <label for="width">Figure width</label>
+      <br>
+      <input type="int" name="width", value="{{ request.form.get('width', 1024) }}"></input>
+      <br>
+
       <button type="submit">Submit</button>
     </form>
   </p>

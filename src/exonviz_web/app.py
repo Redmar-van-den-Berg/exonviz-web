@@ -25,8 +25,12 @@ def index() -> str:
 def index_post() -> str:
     text = request.form["transcript"]
     height = int(request.form["height"])
+    gap = int(request.form["gap"])
+    width = int(request.form["width"])
     exons, reverse = cache_fetch(text)
-    session["svg"] = str(draw_exons(exons, reverse, height=height,))
+    session["svg"] = str(
+        draw_exons(exons, reverse, height=height, gap_size=gap, max_width=width)
+    )
     return render_template("index.html")
 
 

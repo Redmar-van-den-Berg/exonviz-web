@@ -23,6 +23,7 @@ def index() -> str:
 
 @app.route("/", methods=["POST"])
 def index_post() -> str:
+    print(request.form)
     text = request.form["transcript"]
     height = int(request.form["height"])
     gap = int(request.form["gap"])

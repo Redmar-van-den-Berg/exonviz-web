@@ -1,7 +1,8 @@
 from flask import Blueprint, Flask, render_template, session, request
 from typing import Tuple, List
+import math
 
-from exonviz import draw_exons
+from exonviz import draw_exons, config
 from exonviz import fetch_exons
 from exonviz import Exon
 
@@ -18,19 +19,36 @@ def cache_fetch(transcript: str) -> Tuple[List[Exon], bool]:
 
 @app.route("/", methods=["GET"])
 def index() -> str:
+    # Put the default config into the session
+    for key in config:
+        if key not in session:
+            session[key] = config[key]
+    # Set DMD as default
+    if "transcript" not in session:
+        session["transcript"] = "NM_004006.3"
+
     return render_template("index.html")
 
 
 @app.route("/", methods=["POST"])
 def index_post() -> str:
-    print(request.form)
-    text = request.form["transcript"]
-    height = int(request.form["height"])
-    gap = int(request.form["gap"])
-    width = int(request.form["width"])
-    exons, reverse = cache_fetch(text)
+    session["transcript"] = request.form["transcript"]
+    session["height"] = int(request.form["height"])
+    session["gap"] = int(request.form["gap"])
+    # Checkboxes only show up when set to true
+    session["noncoding"] = "noncoding" in request.form
+
+    # inf is the special case for width
+    width = request.form["width"]
+    if width == 'inf':
+        session["width"] = math.inf
+    else:
+        session["width"] = int(request.form["width"])
+
+    exons, reverse = cache_fetch(session["transcript"])
+
     session["svg"] = str(
-        draw_exons(exons, reverse, height=height, gap_size=gap, max_width=width)
+        draw_exons(exons, reverse, config=session)
     )
     return render_template("index.html")
 

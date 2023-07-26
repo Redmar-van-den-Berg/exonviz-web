@@ -12,27 +12,27 @@
     <form method="POST">
       <label for="transcript">Transcript</label>
       <br>
-      <input type="text" name="transcript" value="{{ request.form['transcript'] }}"></input>
+      <input type="text" name="transcript" value="{{ session['transcript'] }}"></input>
       <br>
 
       <label for="height">Exon height</label>
       <br>
-      <input type="int" name="height", value="{{ request.form.get('heigh', 20) }}"></input>
+      <input type="int" name="height", value="{{ session['height'] }}"></input>
       <br>
 
       <label for="gap">Exon gap size</label>
       <br>
-      <input type="int" name="gap", value="{{ request.form.get('gap', 5) }}"></input>
+      <input type="int" name="gap", value="{{ session['gap'] }}"></input>
       <br>
 
-      <label for="width">Figure width</label>
+      <label for="width">Figure width (put 'inf' for infinite)</label>
       <br>
-      <input type="int" name="width", value="{{ request.form.get('width', 1024) }}"></input>
+      <input type="int" name="width", value="{{ session['width'] }}"></input>
       <br>
 
       <label for="non_coding">Show non-coding</label>
       <br>
-      <input type="checkbox" name="non_coding" id="non_coding">
+      <input type="checkbox" name="noncoding" id="noncoding" {{ "checked" if session['noncoding'] }}>
       <br>
 
       <button type="submit">Submit</button>

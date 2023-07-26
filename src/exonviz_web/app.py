@@ -1,5 +1,5 @@
 from flask import Blueprint, Flask, render_template, session, request
-from typing import Tuple, List
+from typing import Tuple, List, Dict, Any
 import math
 
 from exonviz import draw_exons, config
@@ -30,17 +30,27 @@ def index() -> str:
     return render_template("index.html")
 
 
+def _update_config(config: Dict[str, Any], session: Any) -> Dict[str, Any]:
+    """Update the configuration with values from the session"""
+    d = config.copy()
+    for key in d:
+        d[key] = session[key]
+    return d
+
+
 @app.route("/", methods=["POST"])
 def index_post() -> str:
     session["transcript"] = request.form["transcript"]
     session["height"] = int(request.form["height"])
     session["gap"] = int(request.form["gap"])
-    # Checkboxes only show up when set to true
     session["noncoding"] = "noncoding" in request.form
+
+    # Checkboxes only show up when set to true
+    session["color"] = request.form["color"]
 
     # inf is the special case for width
     width = request.form["width"]
-    if width == 'inf':
+    if width == "inf":
         session["width"] = math.inf
     else:
         session["width"] = int(request.form["width"])
@@ -48,7 +58,7 @@ def index_post() -> str:
     exons, reverse = cache_fetch(session["transcript"])
 
     session["svg"] = str(
-        draw_exons(exons, reverse, config=session)
+        draw_exons(exons, reverse, config=_update_config(config, session))
     )
     return render_template("index.html")
 
@@ -56,7 +66,7 @@ def index_post() -> str:
 @app.route("/draw/<transcript>", methods=["GET"])
 def draw(transcript: str) -> str:
     exons, reverse = cache_fetch(transcript)
-    return str(draw_exons(exons, reverse))
+    return str(draw_exons(exons, reverse, config))
 
 
 if __name__ == "__main__":

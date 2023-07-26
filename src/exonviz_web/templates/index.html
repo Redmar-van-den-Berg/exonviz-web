@@ -30,6 +30,11 @@
       <input type="int" name="width", value="{{ session['width'] }}"></input>
       <br>
 
+      <label for="width">Color keyword (see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/named-color">this list </a> allowed colors)</label>
+      <br>
+      <input type="text" name="color", value="{{ session['color'] }}"></input>
+      <br>
+
       <label for="non_coding">Show non-coding</label>
       <br>
       <input type="checkbox" name="noncoding" id="noncoding" {{ "checked" if session['noncoding'] }}>

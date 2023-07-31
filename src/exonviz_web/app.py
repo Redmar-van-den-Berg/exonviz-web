@@ -1,6 +1,7 @@
 from flask import Blueprint, Flask, render_template, session, request
 from typing import Tuple, List, Dict, Any
 import math
+import secrets
 
 from exonviz import draw_exons, config
 from exonviz import fetch_exons
@@ -10,6 +11,7 @@ from exonviz import Exon
 app = Flask(__name__)
 bp = Blueprint("exonviz", __name__)
 app.register_blueprint(bp)
+app.secret_key = secrets.token_hex()
 
 
 def cache_fetch(transcript: str) -> Tuple[List[Exon], bool]:

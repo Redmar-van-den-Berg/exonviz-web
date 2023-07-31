@@ -18,6 +18,7 @@
         name:
           - acl
           - git
+          - nginx
           - python3-pip
           - python3-virtualenv
           - python3-setuptools
@@ -45,6 +46,8 @@
           - gunicorn
         virtualenv: "{{ exonviz_dir }}/venv"
         state: latest
+      notify:
+        - Restart gunicorn
 
     - name: Copy systemd service for exonviz-web
       become: yes
@@ -65,6 +68,27 @@
         - Reload systemd
         - Restart gunicorn
 
+    - name: Copy nginx configuration
+      become: yes
+      template:
+        src: nginx.conf.j2
+        dest: /etc/nginx/sites-available/exonviz.conf
+      notify:
+        - Restart nginx
+
+    - name: Remove default nginx site
+      become: yes
+      ansible.builtin.file:
+        path: /etc/nginx/sites-enabled/default
+        state: absent
+
+    - name: Enable exonviz site
+      become: yes
+      ansible.builtin.file:
+        src: /etc/nginx/sites-available/exonviz.conf
+        dest: /etc/nginx/sites-enabled/exonviz
+        state: link
+
 
   # Handlers
   handlers:
@@ -76,4 +100,10 @@
       become: true
       service:
         name: exonviz
+        state: restarted
+
+    - name: Restart nginx
+      become: true
+      service:
+        name: nginx
         state: restarted

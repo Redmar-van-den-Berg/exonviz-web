@@ -4,10 +4,10 @@ After=network.target
 
 [Service]
 User={{ user }}
-Group={{ user }}
+Group=www-data
 WorkingDirectory={{ exonviz_dir }}
 Environment="PATH={{ exonviz_dir }}/venv/bin"
-ExecStart={{ exonviz_dir }}/venv/bin/gunicorn --config {{ exonviz_dir }}/gunicorn_config.py "exonviz_web.app:app"
+ExecStart={{ exonviz_dir }}/venv/bin/gunicorn --config {{ exonviz_dir }}/gunicorn_config.py --workers 2 --bind unix:exonviz.sock "exonviz_web.app:app"
 
 [Install]
 WantedBy=multi-user.target

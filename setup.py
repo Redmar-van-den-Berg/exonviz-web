@@ -78,7 +78,7 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'exonviz-web=python_project.cli:main',
+            'exonviz-web=exonviz_web.cli:main',
         ]
     },
 )

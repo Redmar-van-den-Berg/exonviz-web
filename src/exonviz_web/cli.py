@@ -3,14 +3,12 @@ Module that contains the command line app, so we can still import __main__
 without executing side effects
 """
 
-import argparse
+from .app import app
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Description of command.")
-    parser.add_argument("--name", default="world", required=False)
-    args = parser.parse_args()
-    print(f"Hello, {args.name}")
+    app.secret_key = "super secret key"
+    app.run()
 
 
 if __name__ == "__main__":

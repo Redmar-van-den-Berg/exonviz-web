@@ -3,6 +3,7 @@
   vars:
     repo_url: https://github.com/Redmar-van-den-Berg/exonviz-web.git
     exonviz_dir: /opt/exonviz
+    user: dcrt
 
   pre_tasks:
     - name: Update APT cache
@@ -15,11 +16,17 @@
       become: yes
       apt:
         name:
+          - acl
           - git
           - python3-pip
-          - python3-venv
+          - python3-virtualenv
           - python3-setuptools
         state: present
+
+    - name: Create dcrt user
+      become: yes
+      ansible.builtin.user:
+        name: "{{ user }}"
 
     - name: Create exonviz directory
       become: yes
@@ -27,9 +34,46 @@
         path: "{{ exonviz_dir }}"
         state: directory
         mode: '0755'
-        owner: "{{ ansible_user }}"
+        owner: "{{ user }}"
 
-    - name: Clone the exonviz-web app
-      ansible.builtin.git:
-        repo: "{{ repo_url }}"
-        dest: "{{ exonviz_dir }}"
+    - name: Create virtualenv
+      become: yes
+      become_user: "{{ user }}"
+      ansible.builtin.pip:
+        name:
+          - "git+{{ repo_url }}"
+          - gunicorn
+        virtualenv: "{{ exonviz_dir }}/venv"
+        state: latest
+
+    - name: Copy systemd service for exonviz-web
+      become: yes
+      template:
+        src: exonviz.service.j2
+        dest: /etc/systemd/system/exonviz.service
+      notify:
+        - Reload systemd
+        - Restart gunicorn
+
+    - name: Copy gunicorn configuration
+      become: yes
+      template:
+        src: gunicorn_config.py.j2
+        dest: "{{ exonviz_dir }}/gunicorn_config.py"
+        owner: "{{ user }}"
+      notify:
+        - Reload systemd
+        - Restart gunicorn
+
+
+  # Handlers
+  handlers:
+    - name: Reload systemd
+      become: yes
+      command: systemctl daemon-reload
+
+    - name: Restart gunicorn
+      become: true
+      service:
+        name: exonviz
+        state: restarted

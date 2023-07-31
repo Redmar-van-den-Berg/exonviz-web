@@ -1,0 +1,8 @@
+bind = "127.0.0.1:5000"
+
+loglevel = "debug"
+errorlog = "{{ exonviz_dir }}/gunicorn_error.log"
+accesslog = "{{ exonviz_dir }}/gunicorn_access.log"
+
+# Capture print, logging from the workers and florea2 fprintf's and crashes
+capture_output = True

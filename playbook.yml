@@ -1,0 +1,35 @@
+---
+- hosts: all
+  vars:
+    repo_url: https://github.com/Redmar-van-den-Berg/exonviz-web.git
+    exonviz_dir: /opt/exonviz
+
+  pre_tasks:
+    - name: Update APT cache
+      become: yes
+      apt:
+        update_cache: yes
+        force_apt_get: yes
+  tasks:
+    - name: Install packages
+      become: yes
+      apt:
+        name:
+          - git
+          - python3-pip
+          - python3-venv
+          - python3-setuptools
+        state: present
+
+    - name: Create exonviz directory
+      become: yes
+      file:
+        path: "{{ exonviz_dir }}"
+        state: directory
+        mode: '0755'
+        owner: "{{ ansible_user }}"
+
+    - name: Clone the exonviz-web app
+      ansible.builtin.git:
+        repo: "{{ repo_url }}"
+        dest: "{{ exonviz_dir }}"

@@ -1,0 +1,3 @@
+recursive-include src/exonviz_web/static *
+recursive-include src/exonviz_web/templates *
+recursive-exclude templates *

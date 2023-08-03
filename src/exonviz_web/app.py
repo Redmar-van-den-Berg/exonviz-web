@@ -1,4 +1,4 @@
-from flask import Blueprint, Flask, render_template, session, request
+from flask import Blueprint, Flask, render_template, session, request, flash
 from typing import Tuple, List, Dict, Any
 import math
 import secrets
@@ -18,6 +18,7 @@ app.secret_key = secrets.token_hex()
 @functools.cache
 def cache_fetch(transcript: str) -> Tuple[List[Exon], bool]:
     """Wrapper to cache calls to mutalyzer"""
+    app.logger.info(f"Fetching {transcript} from mutalyzer")
     return fetch_exons(transcript)
 
 
@@ -50,20 +51,17 @@ def index_post() -> str:
     session["noncoding"] = "noncoding" in request.form
 
     # Checkboxes only show up when set to true
-    session["color"] = request.form["color"]
+    session["color"] = request.form["color"] or config["color"]
 
-    # inf is the special case for width
-    width = request.form["width"]
-    if width == "inf":
-        session["width"] = math.inf
-    else:
-        session["width"] = int(request.form["width"])
+    session["width"] = int(request.form["width"])
 
-    exons, reverse = cache_fetch(session["transcript"])
-
-    session["svg"] = str(
-        draw_exons(exons, reverse, config=_update_config(config, session))
-    )
+    try:
+        exons, reverse = cache_fetch(session["transcript"])
+        session["svg"] = str(
+            draw_exons(exons, reverse, config=_update_config(config, session))
+        )
+    except Exception as e:
+        flash(str(e))
     return render_template("index.html")
 
 

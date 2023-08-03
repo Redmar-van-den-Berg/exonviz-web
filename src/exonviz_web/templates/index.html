@@ -5,9 +5,6 @@
 {% endblock %}
 
 {% block content %}
-  <p>
-    Welcome to Exonviz, try it out by clicking <a href="http://127.0.0.1:5000/draw/NG_012337.3(NM_003002.4):c.274G>T">here</a>!
-  </p>
   <p>Input a transcript name (with version!) or HGVS description below
     <form method="POST">
       <label for="transcript">Transcript</label>
@@ -17,20 +14,20 @@
 
       <label for="height">Exon height</label>
       <br>
-      <input type="int" name="height", value="{{ session['height'] }}"></input>
+      <input type="number" name="height", value="{{ session['height'] }}"></input>
       <br>
 
       <label for="gap">Exon gap size</label>
       <br>
-      <input type="int" name="gap", value="{{ session['gap'] }}"></input>
+      <input type="number" name="gap", value="{{ session['gap'] }}"></input>
       <br>
 
-      <label for="width">Figure width (put 'inf' for infinite)</label>
+      <label for="width">Figure width</label>
       <br>
-      <input type="int" name="width", value="{{ session['width'] }}"></input>
+      <input type="number" name="width", value="{{ session['width'] }}"></input>
       <br>
 
-      <label for="width">Color keyword (see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/named-color">this list </a> allowed colors)</label>
+      <label for="color">Exon color (see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/named-color">this list</a> of allowed colors)</label>
       <br>
       <input type="text" name="color", value="{{ session['color'] }}"></input>
       <br>

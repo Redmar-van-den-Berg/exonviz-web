@@ -32,9 +32,12 @@
       <input type="text" name="color", value="{{ session['color'] }}"></input>
       <br>
 
-      <label for="non_coding">Show non-coding</label>
-      <br>
+      <label for="non_coding">Show non-coding:</label>
       <input type="checkbox" name="noncoding" id="noncoding" {{ "checked" if session['noncoding'] }}>
+      <br>
+
+      <label for="exon_number">Show exon number:</label>
+      <input type="checkbox" name="exonnumber" id="exonnumber" {{ "checked" if session['exonnumber'] }}>
       <br>
 
       <button type="submit">Submit</button>

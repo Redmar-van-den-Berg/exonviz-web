@@ -49,6 +49,7 @@ def index_post() -> str:
     session["height"] = int(request.form["height"])
     session["gap"] = int(request.form["gap"])
     session["noncoding"] = "noncoding" in request.form
+    session["exonnumber"] = "exonnumber" in request.form
 
     # Checkboxes only show up when set to true
     session["color"] = request.form["color"] or config["color"]

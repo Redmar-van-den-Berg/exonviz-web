@@ -2,6 +2,7 @@ from flask import Blueprint, Flask, render_template, session, request
 from typing import Tuple, List, Dict, Any
 import math
 import secrets
+import functools
 
 from exonviz import draw_exons, config
 from exonviz import fetch_exons
@@ -14,6 +15,7 @@ app.register_blueprint(bp)
 app.secret_key = secrets.token_hex()
 
 
+@functools.cache
 def cache_fetch(transcript: str) -> Tuple[List[Exon], bool]:
     """Wrapper to cache calls to mutalyzer"""
     return fetch_exons(transcript)

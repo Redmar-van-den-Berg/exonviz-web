@@ -6,4 +6,4 @@
 
 ------------------------------------------------------------------------
 ## Documentation
-Write the documetnation for exonviz-web here
+Write the documentation for exonviz-web here

@@ -5,56 +5,61 @@
 {% endblock %}
 
 {% block content %}
-  <p>Input a transcript name (with version!) or HGVS description below
-    <form method="POST">
-      <label for="transcript">Transcript</label>
-      <br>
-      <input type="text" name="transcript" value="{{ session['transcript'] }}"></input>
-      <br>
+  <p>Input a transcript name (with version!) or HGVS description below</p>
+  <div class="float-container">
+    <div class="sidebar">
+      <form method="POST">
+        <label for="transcript">Transcript</label>
+        <br>
+        <input type="text" name="transcript" value="{{ session['transcript'] }}"></input>
+        <br>
 
-      <label for="height">Exon height</label>
-      <br>
-      <input type="number" name="height", value="{{ session['height'] }}"></input>
-      <br>
+        <label for="height">Exon height</label>
+        <br>
+        <input type="number" name="height", value="{{ session['height'] }}"></input>
+        <br>
 
-      <label for="gap">Exon gap size</label>
-      <br>
-      <input type="number" name="gap", value="{{ session['gap'] }}"></input>
-      <br>
+        <label for="gap">Exon gap size</label>
+        <br>
+        <input type="number" name="gap", value="{{ session['gap'] }}"></input>
+        <br>
 
-      <label for="width">Figure width</label>
-      <br>
-      <input type="number" name="width", value="{{ session['width'] }}"></input>
-      <br>
+        <label for="width">Figure width</label>
+        <br>
+        <input type="number" name="width", value="{{ session['width'] }}"></input>
+        <br>
 
-      <label for="width">First exon</label>
-      <br>
-      <input type="number" name="firstexon", value="{{ session['firstexon'] }}"></input>
-      <br>
+        <label for="width">First exon</label>
+        <br>
+        <input type="number" name="firstexon", value="{{ session['firstexon'] }}"></input>
+        <br>
 
-      <label for="width">Last exon</label>
-      <br>
-      <input type="number" name="lastexon", value="{{ session['lastexon'] }}"></input>
-      <br>
+        <label for="width">Last exon</label>
+        <br>
+        <input type="number" name="lastexon", value="{{ session['lastexon'] }}"></input>
+        <br>
 
-      <label for="color">Exon color (see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/named-color">this list</a> of allowed colors)</label>
-      <br>
-      <input type="text" name="color", value="{{ session['color'] }}"></input>
-      <br>
+        <label for="color">Exon color (see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/named-color">this list</a> of allowed colors)</label>
+        <br>
+        <input type="text" name="color", value="{{ session['color'] }}"></input>
+        <br>
 
-      <label for="non_coding">Show non-coding:</label>
-      <input type="checkbox" name="noncoding" id="noncoding" {{ "checked" if session['noncoding'] }}>
-      <br>
+        <label for="non_coding">Show non-coding:</label>
+        <input type="checkbox" name="noncoding" id="noncoding" {{ "checked" if session['noncoding'] }}>
+        <br>
 
-      <label for="exon_number">Show exon number:</label>
-      <input type="checkbox" name="exonnumber" id="exonnumber" {{ "checked" if session['exonnumber'] }}>
-      <br>
+        <label for="exon_number">Show exon number:</label>
+        <input type="checkbox" name="exonnumber" id="exonnumber" {{ "checked" if session['exonnumber'] }}>
+        <br>
 
-      <button type="submit">Submit</button>
-    </form>
-  </p>
+        <button type="submit">Submit</button>
+      </form>
+    </div>
 
-  {% if session["svg"] %}
-    {{ session["svg"] | safe }}
-  {% endif %}
+    <div class="float-child">
+      {% if session["svg"] %}
+        {{ session["svg"] | safe }}
+      {% endif %}
+    </div>
+  </div>
 {% endblock %}

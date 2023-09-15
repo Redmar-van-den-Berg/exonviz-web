@@ -8,3 +8,20 @@
   background: #d97553;
   border: 1px solid inherit;
 }
+
+.float-container {
+  padding: 20px;
+}
+
+.sidebar {
+  width: 25%;
+  float: left;
+  padding: 20px;
+}
+
+.float-child {
+  width: 50%;
+  float: left;
+  padding: 20px;
+  border: 1px solid black;
+}

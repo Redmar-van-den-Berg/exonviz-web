@@ -31,6 +31,8 @@ def index() -> str:
     # Set DMD as default
     if "transcript" not in session:
         session["transcript"] = "NM_004006.3"
+    # Set the width as default
+    session["width"] = 1024
 
     return render_template("index.html")
 

@@ -33,6 +33,9 @@ def index() -> str:
         session["transcript"] = "NM_004006.3"
     # Set the width as default
     session["width"] = 1024
+    # Set the first and last exon
+    session["firstexon"] = 1
+    session["lastexon"] = 1000
 
     return render_template("index.html")
 
@@ -50,6 +53,8 @@ def index_post() -> str:
     session["transcript"] = request.form["transcript"]
     session["height"] = int(request.form["height"])
     session["gap"] = int(request.form["gap"])
+    session["firstexon"] = int(request.form["firstexon"])
+    session["lastexon"] = int(request.form["lastexon"])
     session["noncoding"] = "noncoding" in request.form
     session["exonnumber"] = "exonnumber" in request.form
 

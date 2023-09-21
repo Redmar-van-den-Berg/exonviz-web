@@ -40,6 +40,8 @@
     - name: Create virtualenv
       become: yes
       become_user: "{{ user }}"
+      # Since we use forcereinstall, the venv always changes to the latest version
+      changed_when: true
       ansible.builtin.pip:
         name:
           - "git+{{ repo_url }}"

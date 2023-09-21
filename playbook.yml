@@ -45,7 +45,7 @@
           - "git+{{ repo_url }}"
           - gunicorn
         virtualenv: "{{ exonviz_dir }}/venv"
-        state: latest
+        state: forcereinstall
       notify:
         - Restart gunicorn
 

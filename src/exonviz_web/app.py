@@ -65,12 +65,12 @@ def index_post() -> str:
 
     try:
         exons, reverse = cache_fetch(session["transcript"])
-        session["svg"] = str(
-            draw_exons(exons, reverse, config=_update_config(config, session))
+        figure = draw_exons(exons, reverse, config=_update_config(config, session)
         )
     except Exception as e:
         flash(str(e))
-    return render_template("index.html")
+        figure = ""
+    return render_template("index.html", figure=str(figure))
 
 
 @app.route("/draw/<transcript>", methods=["GET"])

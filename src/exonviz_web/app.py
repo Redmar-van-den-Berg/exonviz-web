@@ -1,4 +1,4 @@
-from flask import Blueprint, Flask, render_template, session, request, flash, url_for
+from flask import Blueprint, Flask, Response, render_template, session, request, flash, url_for
 from typing import Tuple, List, Dict, Any
 import math
 import secrets
@@ -85,8 +85,17 @@ def draw() -> str:
     for field in ["exonnumber", "noncoding"]:
         figure_config[field] = figure_config[field] == "True"
 
-    exons, reverse = cache_fetch(figure_config.pop("transcript"))
-    return str(draw_exons(exons, reverse, figure_config))
+    # Pull out the transcript name
+    transcript = figure_config.pop("transcript")
+
+    exons, reverse = cache_fetch(transcript)
+    figure = str(draw_exons(exons, reverse, figure_config))
+
+    return Response(
+        figure,
+        mimetype="text/svg",
+        headers={"Content-disposition": f"attachment; filename={transcript}.svg"}
+    )
 
 
 if __name__ == "__main__":

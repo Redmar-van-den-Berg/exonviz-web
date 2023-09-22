@@ -76,7 +76,7 @@ def index_post() -> str:
 
     try:
         exons, reverse = cache_fetch(session["transcript"])
-        figure = draw_exons(exons, reverse, config=_update_config(config, session))
+        figure = str(draw_exons(exons, reverse, config=_update_config(config, session)))
     except Exception as e:
         flash(str(e))
         figure = ""
@@ -84,8 +84,8 @@ def index_post() -> str:
 
 
 @app.route("/draw", methods=["GET"])
-def draw() -> str:
-    figure_config = dict(request.args)
+def draw() -> Response:
+    figure_config: dict[str, Any] = dict(request.args)
 
     # Cast integer values to int
     for field in ["firstexon", "lastexon", "gap", "height", "width"]:

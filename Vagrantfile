@@ -5,7 +5,7 @@ Vagrant.configure("2") do |config|
   config.vm.network :forwarded_port, guest: 80, host: 8000, host_ip: "127.0.0.1"
 
   config.vm.provider :libvirt do |libvirt|
-    libvirt.memory = 2048
+    libvirt.memory = 500
     libvirt.cpus = 1
   end
 

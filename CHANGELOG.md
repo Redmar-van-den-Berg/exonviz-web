@@ -9,6 +9,7 @@ that users understand how the changes affect the new version.
 
 ## v0.0.2-dev
 - Fix a bug with very large transcripts
+- Add configuration options to /draw endpoint
 
 ## v0.0.1
 - Initial commit

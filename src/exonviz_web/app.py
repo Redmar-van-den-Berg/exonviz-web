@@ -1,4 +1,4 @@
-from flask import Blueprint, Flask, render_template, session, request, flash
+from flask import Blueprint, Flask, render_template, session, request, flash, url_for
 from typing import Tuple, List, Dict, Any
 import math
 import secrets
@@ -73,10 +73,20 @@ def index_post() -> str:
     return render_template("index.html", figure=str(figure))
 
 
-@app.route("/draw/<transcript>", methods=["GET"])
-def draw(transcript: str) -> str:
-    exons, reverse = cache_fetch(transcript)
-    return str(draw_exons(exons, reverse, config))
+@app.route("/draw", methods=["GET"])
+def draw() -> str:
+    figure_config = dict(request.args)
+
+    # Cast integer values to int
+    for field in ["firstexon", "lastexon", "gap", "height", "width"]:
+        figure_config[field] = int(figure_config[field])
+
+    # Cast boolean values to boolean
+    for field in ["exonnumber", "noncoding"]:
+        figure_config[field] = figure_config[field] == "True"
+
+    exons, reverse = cache_fetch(figure_config.pop("transcript"))
+    return str(draw_exons(exons, reverse, figure_config))
 
 
 if __name__ == "__main__":

@@ -53,6 +53,10 @@
         <br>
 
         <button type="submit">Submit</button>
+
+        {% if download_url %}
+          <a href={{ download_url }}>Download!</a>
+        {% endif %}
       </form>
     </div>
 

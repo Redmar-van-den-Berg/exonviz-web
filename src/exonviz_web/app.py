@@ -1,4 +1,13 @@
-from flask import Blueprint, Flask, Response, render_template, session, request, flash, url_for
+from flask import (
+    Blueprint,
+    Flask,
+    Response,
+    render_template,
+    session,
+    request,
+    flash,
+    url_for,
+)
 from typing import Tuple, List, Dict, Any
 import math
 import secrets
@@ -63,14 +72,15 @@ def index_post() -> str:
 
     session["width"] = int(request.form["width"])
 
+    download_url = url_for("draw", **session)
+
     try:
         exons, reverse = cache_fetch(session["transcript"])
-        figure = draw_exons(exons, reverse, config=_update_config(config, session)
-        )
+        figure = draw_exons(exons, reverse, config=_update_config(config, session))
     except Exception as e:
         flash(str(e))
         figure = ""
-    return render_template("index.html", figure=str(figure))
+    return render_template("index.html", figure=str(figure), download_url=download_url)
 
 
 @app.route("/draw", methods=["GET"])
@@ -94,7 +104,7 @@ def draw() -> str:
     return Response(
         figure,
         mimetype="text/svg",
-        headers={"Content-disposition": f"attachment; filename={transcript}.svg"}
+        headers={"Content-disposition": f"attachment; filename={transcript}.svg"},
     )
 
 

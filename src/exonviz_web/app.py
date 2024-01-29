@@ -9,14 +9,12 @@ from flask import (
     url_for,
 )
 from typing import Tuple, List, Dict, Any
-import math
 import secrets
 import functools
 
 from exonviz import draw_exons, config
-from exonviz import fetch_exons
-from exonviz import Exon
-
+from exonviz import mutalyzer
+from exonviz.cli import check_input, get_MANE
 
 app = Flask(__name__)
 bp = Blueprint("exonviz", __name__)
@@ -24,12 +22,24 @@ app.register_blueprint(bp)
 app.secret_key = secrets.token_hex()
 
 
+MANE = get_MANE()
+
 @functools.cache
-def cache_fetch(transcript: str) -> Tuple[List[Exon], bool]:
+def cache_fetch_exons(transcript: str) -> Dict[str, Any]:
     """Wrapper to cache calls to mutalyzer"""
     app.logger.info(f"Fetching {transcript} from mutalyzer")
-    return fetch_exons(transcript)
+    return mutalyzer.fetch_exons(transcript)
 
+@functools.cache
+def cache_fetch_variants(transcript: str) -> Dict[str, Any]:
+    """Wrapper to cache calls to mutalyzer"""
+    app.logger.info(f"Fetching variants for {transcript} from mutalyzer")
+    return mutalyzer.fetch_variants(transcript)
+
+def build_exons(transcript: str, config: Dict[str, Any]):
+    exons = cache_fetch_exons(transcript)
+    variants = cache_fetch_variants(transcript)
+    return mutalyzer.build_exons(exons, variants, config)
 
 @app.route("/", methods=["GET"])
 def index() -> str:
@@ -56,6 +66,12 @@ def _update_config(config: Dict[str, Any], session: Any) -> Dict[str, Any]:
         d[key] = session[key]
     return d
 
+def rewrite_transcript(transcript: str, MANE: Dict[str, str]):
+    """Rewrite the transcript, if needed"""
+    if transcript in MANE:
+        return MANE[transcript]
+    else:
+        return check_input(transcript)
 
 @app.route("/", methods=["POST"])
 def index_post() -> str:
@@ -72,11 +88,16 @@ def index_post() -> str:
 
     session["width"] = int(request.form["width"])
 
+    # Rewrite the transcript (e.g. DMD, NM_1234.5) to a HGVS description
+    # DMD -> NM_004006.3:c.=
+    # NM_1234.5 -> NM_1234.5:c.=
+    session["transcript"] = rewrite_transcript(session["transcript"], MANE)
+
     download_url = url_for("draw", **session)
 
     try:
-        exons, reverse = cache_fetch(session["transcript"])
-        figure = str(draw_exons(exons, reverse, config=_update_config(config, session)))
+        exons = build_exons(session["transcript"], config=_update_config(config, session))
+        figure = str(draw_exons(exons, config=_update_config(config, session)))
     except Exception as e:
         flash(str(e))
         figure = ""
@@ -98,8 +119,8 @@ def draw() -> Response:
     # Pull out the transcript name
     transcript = figure_config.pop("transcript")
 
-    exons, reverse = cache_fetch(transcript)
-    figure = str(draw_exons(exons, reverse, figure_config))
+    exons = build_exons(transcript, figure_config)
+    figure = str(draw_exons(exons, figure_config))
 
     return Response(
         figure,

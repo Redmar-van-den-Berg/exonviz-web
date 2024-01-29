@@ -1,4 +1,5 @@
 name: Continous integration
+on: [push, pull_request]
 
 jobs:
   sanity:

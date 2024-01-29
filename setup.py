@@ -67,7 +67,8 @@ setup(
     python_requires='>=3.9',
     install_requires=[
         'flask',
-        'exonviz>=0.2.1'
+        'exonviz>=0.2.1',
+        'typing_extensions',
         # eg: 'aspectlib==1.1.1', 'six>=1.7',
     ],
     extras_require={

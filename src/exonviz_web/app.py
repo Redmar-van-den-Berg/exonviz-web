@@ -12,7 +12,7 @@ from typing import Tuple, List, Dict, Any
 import secrets
 import functools
 
-from exonviz import draw_exons, config
+from exonviz import draw_exons, config, Exon
 from exonviz import mutalyzer
 from exonviz.cli import check_input, get_MANE
 
@@ -39,7 +39,7 @@ def cache_fetch_variants(transcript: str) -> Dict[str, Any]:
     return mutalyzer.fetch_variants(transcript)
 
 
-def build_exons(transcript: str, config: Dict[str, Any]):
+def build_exons(transcript: str, config: Dict[str, Any]) -> List[Exon]:
     exons = cache_fetch_exons(transcript)
     variants = cache_fetch_variants(transcript)
     return mutalyzer.build_exons(exons, variants, config)
@@ -71,7 +71,7 @@ def _update_config(config: Dict[str, Any], session: Any) -> Dict[str, Any]:
     return d
 
 
-def rewrite_transcript(transcript: str, MANE: Dict[str, str]):
+def rewrite_transcript(transcript: str, MANE: Dict[str, str]) -> str:
     """Rewrite the transcript, if needed"""
     if transcript in MANE:
         transcript = MANE[transcript]

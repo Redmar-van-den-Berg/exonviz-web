@@ -1,11 +1,5 @@
 name: Continous integration
-
-on:
-  pull_request:
-  push:
-    branches:
-      - develop
-      - main
+on: [push, pull_request]
 
 jobs:
   sanity:

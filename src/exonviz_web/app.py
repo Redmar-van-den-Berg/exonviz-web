@@ -69,9 +69,8 @@ def _update_config(config: Dict[str, Any], session: Any) -> Dict[str, Any]:
 def rewrite_transcript(transcript: str, MANE: Dict[str, str]):
     """Rewrite the transcript, if needed"""
     if transcript in MANE:
-        return MANE[transcript]
-    else:
-        return check_input(transcript)
+        transcript = MANE[transcript]
+    return check_input(transcript)
 
 @app.route("/", methods=["POST"])
 def index_post() -> str:

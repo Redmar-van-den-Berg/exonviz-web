@@ -1,8 +1,5 @@
 name: Continous integration
 
-on:
-  pull_request:
-
 jobs:
   sanity:
     runs-on: ubuntu-latest

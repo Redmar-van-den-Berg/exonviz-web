@@ -24,11 +24,13 @@ app.secret_key = secrets.token_hex()
 
 MANE = get_MANE()
 
+
 @functools.cache
 def cache_fetch_exons(transcript: str) -> Dict[str, Any]:
     """Wrapper to cache calls to mutalyzer"""
     app.logger.info(f"Fetching {transcript} from mutalyzer")
     return mutalyzer.fetch_exons(transcript)
+
 
 @functools.cache
 def cache_fetch_variants(transcript: str) -> Dict[str, Any]:
@@ -36,10 +38,12 @@ def cache_fetch_variants(transcript: str) -> Dict[str, Any]:
     app.logger.info(f"Fetching variants for {transcript} from mutalyzer")
     return mutalyzer.fetch_variants(transcript)
 
+
 def build_exons(transcript: str, config: Dict[str, Any]):
     exons = cache_fetch_exons(transcript)
     variants = cache_fetch_variants(transcript)
     return mutalyzer.build_exons(exons, variants, config)
+
 
 @app.route("/", methods=["GET"])
 def index() -> str:
@@ -66,11 +70,13 @@ def _update_config(config: Dict[str, Any], session: Any) -> Dict[str, Any]:
         d[key] = session[key]
     return d
 
+
 def rewrite_transcript(transcript: str, MANE: Dict[str, str]):
     """Rewrite the transcript, if needed"""
     if transcript in MANE:
         transcript = MANE[transcript]
     return check_input(transcript)
+
 
 @app.route("/", methods=["POST"])
 def index_post() -> str:
@@ -95,7 +101,9 @@ def index_post() -> str:
     download_url = url_for("draw", **session)
 
     try:
-        exons = build_exons(session["transcript"], config=_update_config(config, session))
+        exons = build_exons(
+            session["transcript"], config=_update_config(config, session)
+        )
         figure = str(draw_exons(exons, config=_update_config(config, session)))
     except Exception as e:
         flash(str(e))

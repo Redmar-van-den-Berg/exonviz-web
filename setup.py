@@ -25,12 +25,12 @@ def read(*names, **kwargs):
 
 setup(
     name='exonviz-web',
-    version='0.0.2',
+    version='0.0.3',
     license='MIT',
     description='An example package. Generated with cookiecutter-pylibrary.',
     long_description='Long description for your exonviz-web',
     author='Redmar van den Berg',
-    author_email='Redmar@ubuntu.com',
+    author_email='RedmarvandenBerg@lumc.nl',
     url='https://github.com/redmar-van-den-berg/exonviz-web',
     packages=find_packages('src'),
     package_dir={'': 'src'},
@@ -67,7 +67,7 @@ setup(
     python_requires='>=3.9',
     install_requires=[
         'flask',
-        'exonviz>=0.2.1',
+        'exonviz>=0.2.2',
         'typing_extensions',
         # eg: 'aspectlib==1.1.1', 'six>=1.7',
     ],

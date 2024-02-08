@@ -1,24 +1,8 @@
 server {
-  server_name www.exonviz.rnatherapy.nl exonviz.rnatherapy.nl;
+  listen 80;
+
   location / {
     include proxy_params;
     proxy_pass http://unix:{{ exonviz_dir }}/exonviz.sock;
   }
-
-    listen 443 ssl; # managed by Certbot
-    ssl_certificate /etc/letsencrypt/live/exonviz.rnatherapy.nl/fullchain.pem; # managed by Certbot
-    ssl_certificate_key /etc/letsencrypt/live/exonviz.rnatherapy.nl/privkey.pem; # managed by Certbot
-    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
-    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
-
-}
-server {
-    if ($host = exonviz.rnatherapy.nl) {
-        return 301 https://$host$request_uri;
-    } # managed by Certbot
-
-
-  listen 80;
-  server_name www.exonviz.rnatherapy.nl exonviz.rnatherapy.nl;
-    return 404; # managed by Certbot
 }

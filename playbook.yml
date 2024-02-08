@@ -77,6 +77,8 @@
         dest: /etc/nginx/sites-available/exonviz.conf
       notify:
         - Restart nginx
+      tags:
+        - never
 
     - name: Remove default nginx site
       become: yes

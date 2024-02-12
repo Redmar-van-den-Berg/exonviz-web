@@ -102,14 +102,11 @@ def index_post() -> str:
 
     session["width"] = int(request.form["width"])
 
-    # Rewrite the transcript (e.g. DMD, NM_1234.5) to a HGVS description
-    # DMD -> NM_004006.3:c.=
-    # NM_1234.5 -> NM_1234.5:c.=
-    session["transcript"] = rewrite_transcript(session["transcript"], MANE)
-
     download_url = url_for("draw", **session)
 
     try:
+        # Rewrite the transcript
+        session["transcript"] = rewrite_transcript(session["transcript"], MANE)
         exons = build_exons(
             session["transcript"], config=_update_config(config, session)
         )

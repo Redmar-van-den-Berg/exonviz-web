@@ -7,7 +7,8 @@ from .app import app
 
 
 def main() -> None:
-    app.secret_key = "super secret key"
+    # Pull FLASK_SECRET_KEY from environment, or use fallback random ID
+    app.config.from_prefixed_env()
     app.run()
 
 

@@ -4,6 +4,14 @@
     repo_url: https://github.com/Redmar-van-den-Berg/exonviz-web.git
     exonviz_dir: /opt/exonviz
     user: dcrt
+    flask_secret_key: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          36363839323964643764623532633665366133663566623932313932346564356262613064346635
+          3064366563393163616565626432663066376539383735630a393832383366623830323438316661
+          36626234643863353435646235653034343562663637616234386436363732343936366464353462
+          3538336165316431640a313165383634623338356532653861613134393635336535313235613466
+          32343766393130636434623662633134623133343330323733333531306430376463356361353962
+          3762396232623838373161373030643565613937353062356566
 
   pre_tasks:
     - name: Update APT cache
@@ -23,6 +31,11 @@
           - python3-virtualenv
           - python3-setuptools
         state: present
+
+    - name: Set timezone
+      become: yes
+      community.general.timezone:
+        name: Europe/Brussels
 
     - name: Create dcrt user
       become: yes

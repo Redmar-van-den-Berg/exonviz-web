@@ -134,8 +134,3 @@ def draw() -> Response:
         mimetype="text/svg",
         headers={"Content-disposition": f"attachment; filename={transcript}.svg"},
     )
-
-
-if __name__ == "__main__":
-    app.secret_key = "super secret key"
-    app.run()

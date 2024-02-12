@@ -11,15 +11,28 @@ from flask import (
 from typing import Tuple, List, Dict, Any
 import secrets
 import functools
+import logging
 
 from exonviz import draw_exons, config, Exon
 from exonviz import mutalyzer
 from exonviz.cli import check_input, get_MANE
 
+# Set up flask
 app = Flask(__name__)
 bp = Blueprint("exonviz", __name__)
 app.register_blueprint(bp)
-app.secret_key = secrets.token_hex()
+# Pull FLASK_SECRET_KEY from environment, or use fallback random ID
+app.config.from_prefixed_env()
+if not app.config.get("SECRET_KEY"):
+    app.secret_key = secrets.token_hex()
+
+# Tie the flask log into gunicorn
+gunicorn_logger = logging.getLogger('gunicorn.error')
+app.logger.handlers = gunicorn_logger.handlers
+app.logger.setLevel(gunicorn_logger.level)
+
+# Log the secret key
+app.logger.info(f"Secret key: {app.config['SECRET_KEY']}")
 
 
 MANE = get_MANE()

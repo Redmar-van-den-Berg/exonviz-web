@@ -147,5 +147,5 @@ def draw() -> Response:
     return Response(
         figure,
         mimetype="text/svg",
-        headers={"Content-disposition": f"attachment; filename={fname}"}
+        headers={"Content-disposition": f"attachment; filename={fname}"},
     )

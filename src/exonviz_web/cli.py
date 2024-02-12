@@ -9,7 +9,7 @@ from .app import app
 def main() -> None:
     # Pull FLASK_SECRET_KEY from environment, or use fallback random ID
     app.config.from_prefixed_env()
-    print(f"Secret key: {app.config['SECRET_KEY']}")
+    app.logger.info(f"Secret key: {app.config['SECRET_KEY']}")
     app.run()
 
 

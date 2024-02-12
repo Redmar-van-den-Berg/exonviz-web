@@ -50,7 +50,7 @@ def cache_fetch_variants(transcript: str) -> Dict[str, Any]:
 def build_exons(transcript: str, config: Dict[str, Any]) -> List[Exon]:
     exons = cache_fetch_exons(transcript)
     variants = cache_fetch_variants(transcript)
-    return mutalyzer.build_exons(exons, variants, config)
+    return mutalyzer.build_exons(transcript, exons, variants, config)
 
 
 @app.route("/", methods=["GET"])

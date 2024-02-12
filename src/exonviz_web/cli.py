@@ -5,6 +5,7 @@ without executing side effects
 
 from .app import app
 
+
 def main() -> None:
     app.run()
 

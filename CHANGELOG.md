@@ -7,6 +7,11 @@ This document is user facing. Please word the changes in such a way
 that users understand how the changes affect the new version.
 -->
 
+## v0.0.5
+- Clean up the filename of the svg download
+- Fix bug with scale in the download endpoint
+- Update Exonviz to 0.2.4
+
 ## v0.0.4
 - Update ExonViz to 0.2.3
 

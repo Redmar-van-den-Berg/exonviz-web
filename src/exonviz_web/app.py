@@ -15,6 +15,7 @@ import functools
 from exonviz import draw_exons, config, Exon
 from exonviz import mutalyzer
 from exonviz.cli import check_input, get_MANE
+from werkzeug.utils import secure_filename
 
 # Set up flask
 app = Flask(__name__)
@@ -121,9 +122,16 @@ def index_post() -> str:
 def draw() -> Response:
     figure_config: dict[str, Any] = dict(request.args)
 
+    # Get the list of variant colors
+    figure_config["variantcolors"] = request.args.getlist("variantcolors")
+
     # Cast integer values to int
     for field in ["firstexon", "lastexon", "gap", "height", "width"]:
         figure_config[field] = int(figure_config[field])
+
+    # Cast float values to float
+    for field in ["scale"]:
+        figure_config[field] = float(figure_config[field])
 
     # Cast boolean values to boolean
     for field in ["exonnumber", "noncoding"]:
@@ -134,9 +142,10 @@ def draw() -> Response:
 
     exons = build_exons(transcript, figure_config)
     figure = str(draw_exons(exons, figure_config))
+    fname = secure_filename(f"{transcript}.svg")
 
     return Response(
         figure,
         mimetype="text/svg",
-        headers={"Content-disposition": f"attachment; filename={transcript}.svg"},
+        headers={"Content-disposition": f"attachment; filename={fname}"}
     )

@@ -5,7 +5,14 @@
 {% endblock %}
 
 {% block content %}
-  <p>Input a gene name or transcript (with version!) below, for example <em>DMD</em> or <em>NM_004006.3</em>.</p>
+  <p>Input a gene name, transcript or variant description below to visualise the transcript.
+    <ul>
+      <li>DMD</li>
+      <li>NM_004006.3</li>
+      <li>NG_012337.3(NM_003002.4):c.274G>T</li>
+      <li>NM_003002.4:r.[274G>T;300del]</li>
+    </ul>
+  </p>
   <div class="float-container">
     <div class="sidebar">
       <form method="POST">

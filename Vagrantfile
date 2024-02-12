@@ -13,7 +13,7 @@ Vagrant.configure("2") do |config|
     ansible.playbook = "playbook.yml"
     ansible.verbose = "v"
     ansible.tags = "all,never"
-    ansible.ask_vault_pass = true
+    ansible.vault_password_file = "vault"
   end
 
 end

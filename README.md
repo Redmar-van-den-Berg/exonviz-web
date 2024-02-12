@@ -15,9 +15,18 @@ vagrant up
 vagrant provision
 ```
 
-## First deployment If you deploy Exonviz-web to a server for the first time,
+# Deploy
+To deploy the ExonViz web app to the server, use
+```bash
+ansible-playbook playbook.yml --ask-vault-password --inventory inventory --ask-become-pass
+```
+
+## First deployment
+If you deploy Exonviz-web to a server for the first time,
 you have to pass the `never` tag to the playbook to copy over the nginx
 configuration.
+**WARNING: This will break the https configuration set up by Certbot, ONLY use
+this when provisioning the server for the first time**
 ```bash
 ansible-playbook playbook.yml --tags "all,never"
 ```

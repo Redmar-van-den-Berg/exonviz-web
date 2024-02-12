@@ -26,6 +26,11 @@
         <input type="number" name="height", value="{{ session['height'] }}"></input>
         <br>
 
+        <label for="scale">Drawing scale (pixels per basepair)</label>
+        <br>
+        <input type="number" name="scale", step="0.1", value="{{ session['scale'] }}"></input>
+        <br>
+
         <label for="gap">Exon gap size</label>
         <br>
         <input type="number" name="gap", value="{{ session['gap'] }}"></input>

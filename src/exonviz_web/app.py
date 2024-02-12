@@ -61,7 +61,7 @@ def index() -> str:
             session[key] = config[key]
     # Set DMD as default
     if "transcript" not in session:
-        session["transcript"] = "NM_004006.3"
+        session["transcript"] = "NM_003002.4:r.[274G>T;300del]"
     # Set the width as default
     session["width"] = 1024
     # Set the first and last exon
@@ -90,6 +90,7 @@ def rewrite_transcript(transcript: str, MANE: Dict[str, str]) -> str:
 def index_post() -> str:
     session["transcript"] = request.form["transcript"]
     session["height"] = int(request.form["height"])
+    session["scale"] = float(request.form["scale"])
     session["gap"] = int(request.form["gap"])
     session["firstexon"] = int(request.form["firstexon"])
     session["lastexon"] = int(request.form["lastexon"])

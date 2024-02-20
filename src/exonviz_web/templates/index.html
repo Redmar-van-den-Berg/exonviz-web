@@ -56,6 +56,11 @@
         <input type="text" name="color", value="{{ session['color'] }}"></input>
         <br>
 
+        <label for="variantcolors">Variant colors</label>
+        <br>
+        <input type="text" name="variantcolors", value="{{ ' '.join(session['variantcolors'])}}" multiple></input>
+        <br>
+
         <label for="non_coding">Show non-coding:</label>
         <input type="checkbox" name="noncoding" id="noncoding" {{ "checked" if session['noncoding'] }}>
         <br>

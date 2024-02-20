@@ -62,7 +62,7 @@ def index() -> str:
     for key in config:
         if key not in session:
             session[key] = config[key]
-    # Set DMD as default
+    # Set a default transcript
     if "transcript" not in session:
         session["transcript"] = "NM_003002.4:r.[274G>T;300del]"
     # Set the width as default
@@ -99,6 +99,8 @@ def index_post() -> str:
     session["lastexon"] = int(request.form["lastexon"])
     session["noncoding"] = "noncoding" in request.form
     session["exonnumber"] = "exonnumber" in request.form
+    session["variantcolors"] = request.form["variantcolors"].split(' ')
+
 
     # Checkboxes only show up when set to true
     session["color"] = request.form["color"] or config["color"]
@@ -148,7 +150,7 @@ def draw() -> Response:
     # Pull out the transcript name
     transcript = figure_config.pop("transcript")
 
-    exons = build_exons(transcript, figure_config)
+    dropped_variants, exons = build_exons(transcript, figure_config)
     figure = str(draw_exons(exons, figure_config))
     fname = secure_filename(f"{transcript}.svg")
 

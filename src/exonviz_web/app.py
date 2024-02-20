@@ -11,6 +11,7 @@ from flask import (
 from typing import Tuple, List, Dict, Any
 import secrets
 import functools
+import copy
 
 from exonviz import draw_exons, config, Exon
 from exonviz import mutalyzer
@@ -48,10 +49,11 @@ def cache_fetch_variants(transcript: str) -> Dict[str, Any]:
     return mutalyzer.fetch_variants(transcript)
 
 
-def build_exons(transcript: str, config: Dict[str, Any]) -> List[Exon]:
-    exons = cache_fetch_exons(transcript)
-    variants = cache_fetch_variants(transcript)
-    return mutalyzer.build_exons(transcript, exons, variants, config)
+def build_exons(transcript: str, config: Dict[str, Any]) -> Tuple[List[str], List[Exon]]:
+    exons = copy.deepcopy(cache_fetch_exons(transcript))
+    variants = copy.deepcopy(cache_fetch_variants(transcript))
+    dropped_variants = mutalyzer.variants_outside_exons(exons["exon"]["g"], variants["views"])
+    return dropped_variants, mutalyzer.build_exons(transcript, exons, variants, config)
 
 
 @app.route("/", methods=["GET"])
@@ -108,13 +110,19 @@ def index_post() -> str:
     try:
         # Rewrite the transcript
         session["transcript"] = rewrite_transcript(session["transcript"], MANE)
-        exons = build_exons(
+        dropped_variants, exons = build_exons(
             session["transcript"], config=_update_config(config, session)
         )
         figure = str(draw_exons(exons, config=_update_config(config, session)))
+
+        # Report any variants we had to drop
+        for var in dropped_variants:
+            flash(f"Dropped variant {var}, which falls outside the exons")
+
     except Exception as e:
         flash(str(e))
         figure = ""
+
     return render_template("index.html", figure=str(figure), download_url=download_url)
 
 

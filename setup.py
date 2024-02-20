@@ -25,7 +25,7 @@ def read(*names, **kwargs):
 
 setup(
     name='exonviz-web',
-    version='0.0.6-dev',
+    version='0.0.6',
     license='MIT',
     description='An example package. Generated with cookiecutter-pylibrary.',
     long_description='Long description for your exonviz-web',

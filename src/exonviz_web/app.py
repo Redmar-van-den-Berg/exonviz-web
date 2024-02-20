@@ -49,10 +49,14 @@ def cache_fetch_variants(transcript: str) -> Dict[str, Any]:
     return mutalyzer.fetch_variants(transcript)
 
 
-def build_exons(transcript: str, config: Dict[str, Any]) -> Tuple[List[str], List[Exon]]:
+def build_exons(
+    transcript: str, config: Dict[str, Any]
+) -> Tuple[List[str], List[Exon]]:
     exons = copy.deepcopy(cache_fetch_exons(transcript))
     variants = copy.deepcopy(cache_fetch_variants(transcript))
-    dropped_variants = mutalyzer.variants_outside_exons(exons["exon"]["g"], variants["views"])
+    dropped_variants = mutalyzer.variants_outside_exons(
+        exons["exon"]["g"], variants["views"]
+    )
     return dropped_variants, mutalyzer.build_exons(transcript, exons, variants, config)
 
 
@@ -99,8 +103,7 @@ def index_post() -> str:
     session["lastexon"] = int(request.form["lastexon"])
     session["noncoding"] = "noncoding" in request.form
     session["exonnumber"] = "exonnumber" in request.form
-    session["variantcolors"] = request.form["variantcolors"].split(' ')
-
+    session["variantcolors"] = request.form["variantcolors"].split(" ")
 
     # Checkboxes only show up when set to true
     session["color"] = request.form["color"] or config["color"]

@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% set input_size = 25 %}
+
 {% block header %}
   <h1>Welcome to ExonViz</h1>
 {% endblock %}
@@ -7,54 +9,74 @@
 {% block content %}
 <p>Input a gene name, transcript or variant description below to visualise the transcript.</p>
 <p>Please see the <a href=https://exonviz.readthedocs.io/en/latest/>documentation</a> for more information.</p>
-<p>Example inputs: <em>DMD</em>, <em>NM_004006.3</em>, <em>NG_012337.3(NM_003002.4):c.274G>T</em> or
-    <em>NM_003002.4:r.[274G>T;300del]</em></p>
+  <table>
+    <tr>
+      <th>Type of input</th>
+      <th>Example</th>
+    </tr>
+    <tr>
+      <td>The name of a gene</td>
+      <td>DMD</td>
+    </tr>
+    <tr>
+      <td>A transcript identifier</td>
+      <td>NM_004006.3</td>
+    </tr>
+    <tr>
+      <td>A HGVS variant description</td>
+      <td>NG_012337.3(NM_003002.4):c.274G>T</td>
+    </tr>
+    <tr>
+      <td>Multiple variants in HGVS</td>
+      <td>NM_003002.4:r.[274G>T;300del]</td>
+    </tr>
+  </table>
   <div class="float-container">
     <div class="sidebar">
       <form method="POST">
         <label for="transcript">Transcript</label>
         <br>
-        <input type="text" name="transcript" value="{{ session['transcript'] }}"></input>
+        <input type="text" name="transcript" size={{ input_size}} value="{{ session['transcript'] }}"></input>
         <br>
 
         <label for="height">Exon height</label>
         <br>
-        <input type="number" name="height", value="{{ session['height'] }}"></input>
+        <input type="number" name="height" size={{ input_size}} value="{{ session['height'] }}"></input>
         <br>
 
         <label for="scale">Drawing scale (pixels per basepair)</label>
         <br>
-        <input type="number" name="scale", step="0.1", value="{{ session['scale'] }}"></input>
+        <input type="number" name="scale", size={{ input_size}} step="0.1", value="{{ session['scale'] }}"></input>
         <br>
 
         <label for="gap">Exon gap size</label>
         <br>
-        <input type="number" name="gap", value="{{ session['gap'] }}"></input>
+        <input type="number" name="gap", size={{ input_size}} value="{{ session['gap'] }}"></input>
         <br>
 
         <label for="width">Figure width</label>
         <br>
-        <input type="number" name="width", value="{{ session['width'] }}"></input>
+        <input type="number" name="width", size={{ input_size}} value="{{ session['width'] }}"></input>
         <br>
 
         <label for="width">First exon</label>
         <br>
-        <input type="number" name="firstexon", value="{{ session['firstexon'] }}"></input>
+        <input type="number" name="firstexon", size={{ input_size}} value="{{ session['firstexon'] }}"></input>
         <br>
 
         <label for="width">Last exon</label>
         <br>
-        <input type="number" name="lastexon", value="{{ session['lastexon'] }}"></input>
+        <input type="number" name="lastexon", size={{ input_size}} value="{{ session['lastexon'] }}"></input>
         <br>
 
         <label for="color">Exon color (see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/named-color">this list</a> of allowed colors)</label>
         <br>
-        <input type="text" name="color", value="{{ session['color'] }}"></input>
+        <input type="text" name="color", size={{ input_size}} value="{{ session['color'] }}"></input>
         <br>
 
         <label for="variantcolors">Variant colors</label>
         <br>
-        <input type="text" name="variantcolors", value="{{ ' '.join(session['variantcolors'])}}" multiple></input>
+        <input type="text" name="variantcolors", size={{ input_size}} value="{{ ' '.join(session['variantcolors'])}}" multiple></input>
         <br>
 
         <label for="non_coding">Show non-coding:</label>

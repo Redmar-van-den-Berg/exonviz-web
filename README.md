@@ -8,6 +8,10 @@
 ## Documentation
 Web server and deploy script for the ExonViz server.
 
+## Run using Flask locally
+```bash
+flask --app exonviz_web.app run
+```
 ## Testing
 You can test the deployment using vagrant:
 ```bash

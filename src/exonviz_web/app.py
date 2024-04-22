@@ -74,6 +74,8 @@ def index() -> str:
     # Set the first and last exon
     session["firstexon"] = 1
     session["lastexon"] = 1000
+    # Set to show exonnumbers by default
+    session["exonnumber"] = True
 
     return render_template("index.html")
 
@@ -104,6 +106,7 @@ def index_post() -> str:
     session["noncoding"] = "noncoding" in request.form
     session["exonnumber"] = "exonnumber" in request.form
     session["variantcolors"] = request.form["variantcolors"].split(" ")
+    session["variantshape"] = request.form["variantshape"]
 
     # Checkboxes only show up when set to true
     session["color"] = request.form["color"] or config["color"]

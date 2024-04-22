@@ -87,6 +87,12 @@
         <input type="checkbox" name="exonnumber" id="exonnumber" {{ "checked" if session['exonnumber'] }}>
         <br>
 
+        <label for="variantshape">Variant shape:</label>
+        <select name="variantshape">
+          <option value="pin" {% if session['variantshape'] == 'pin' %} selected {% endif %}>pin</option>
+          <option value="bar" {% if session['variantshape'] == 'bar' %} selected {% endif %}>bar</option>
+        </select>
+
         <button type="submit">Submit</button>
 
         {% if download_url %}

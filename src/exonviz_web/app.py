@@ -15,7 +15,7 @@ import copy
 
 from exonviz import draw_exons, config, Exon
 from exonviz import mutalyzer
-from exonviz.cli import check_input, get_MANE
+from exonviz.cli import check_input, get_MANE, trim_variants, sort_variants
 from werkzeug.utils import secure_filename
 
 # Set up flask
@@ -38,15 +38,17 @@ MANE = get_MANE()
 @functools.cache
 def cache_fetch_exons(transcript: str) -> Dict[str, Any]:
     """Wrapper to cache calls to mutalyzer"""
-    app.logger.info(f"Fetching {transcript} from mutalyzer")
-    return mutalyzer.fetch_exons(transcript)
+    no_variants = trim_variants(transcript)
+    app.logger.info(f"Fetching {no_variants} from mutalyzer")
+    return mutalyzer.fetch_exons(no_variants)
 
 
 @functools.cache
 def cache_fetch_variants(transcript: str) -> Dict[str, Any]:
     """Wrapper to cache calls to mutalyzer"""
-    app.logger.info(f"Fetching variants for {transcript} from mutalyzer")
-    return mutalyzer.fetch_variants(transcript)
+    sorted = sort_variants(transcript)
+    app.logger.info(f"Fetching variants for {sorted} from mutalyzer")
+    return mutalyzer.fetch_variants(sorted)
 
 
 def build_exons(

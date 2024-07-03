@@ -70,7 +70,7 @@ def index() -> str:
             session[key] = config[key]
     # Set a default transcript
     if "transcript" not in session:
-        session["transcript"] = "NM_003002.4:r.[274G>T;300del]"
+        session["transcript"] = "NM_003002.4:r.[274g>u;300del]"
     # Set the width as default
     session["width"] = 1024
     # Set the first and last exon

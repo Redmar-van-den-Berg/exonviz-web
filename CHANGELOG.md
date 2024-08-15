@@ -7,6 +7,9 @@ This document is user facing. Please word the changes in such a way
 that users understand how the changes affect the new version.
 -->
 
+## v0.0.10
++ Update ExonViz to 0.2.13
++ Fix a bug that caused variants to be reported as dropped incorrectly
 ## v0.0.7
 + Update ExonViz to 0.2.8
 + Increase width of input fields

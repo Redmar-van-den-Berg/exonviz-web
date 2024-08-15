@@ -56,10 +56,9 @@ def build_exons(
 ) -> Tuple[List[str], List[Exon]]:
     exons = copy.deepcopy(cache_fetch_exons(transcript))
     variants = copy.deepcopy(cache_fetch_variants(transcript))
-    dropped_variants = mutalyzer.variants_outside_exons(
-        exons["exon"]["g"], variants["views"]
-    )
-    return dropped_variants, mutalyzer.build_exons(transcript, exons, variants, config)
+
+    build_exons, dropped_variants = mutalyzer.build_exons(transcript, exons, variants, config)
+    return dropped_variants, build_exons
 
 
 @app.route("/", methods=["GET"])
@@ -124,14 +123,19 @@ def index_post() -> str:
             session["transcript"], config=_update_config(config, session)
         )
         figure = str(draw_exons(exons, config=_update_config(config, session)))
-
-        # Report any variants we had to drop
-        for var in dropped_variants:
-            flash(f"Dropped variant {var}, which falls outside the exons")
-
     except Exception as e:
         flash(str(e))
         figure = ""
+        dropped_variants = list()
+
+    # Report any variants we had to drop
+    if dropped_variants:
+        varstring = ', '.join(dropped_variants)
+        if len(dropped_variants) > 1:
+            flash(f"Dropped {len(dropped_variants)} variants which falls outside the exons: {varstring}")
+        else:
+            flash(f"Dropped 1 variant which falls outside the exons: {varstring}")
+
 
     return render_template("index.html", figure=str(figure), download_url=download_url)
 

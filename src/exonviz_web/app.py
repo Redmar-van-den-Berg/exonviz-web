@@ -57,7 +57,9 @@ def build_exons(
     exons = copy.deepcopy(cache_fetch_exons(transcript))
     variants = copy.deepcopy(cache_fetch_variants(transcript))
 
-    build_exons, dropped_variants = mutalyzer.build_exons(transcript, exons, variants, config)
+    build_exons, dropped_variants = mutalyzer.build_exons(
+        transcript, exons, variants, config
+    )
     return dropped_variants, build_exons
 
 
@@ -130,12 +132,13 @@ def index_post() -> str:
 
     # Report any variants we had to drop
     if dropped_variants:
-        varstring = ', '.join(dropped_variants)
+        varstring = ", ".join(dropped_variants)
         if len(dropped_variants) > 1:
-            flash(f"Dropped {len(dropped_variants)} variants which falls outside the exons: {varstring}")
+            flash(
+                f"Dropped {len(dropped_variants)} variants which falls outside the exons: {varstring}"
+            )
         else:
             flash(f"Dropped 1 variant which falls outside the exons: {varstring}")
-
 
     return render_template("index.html", figure=str(figure), download_url=download_url)
 

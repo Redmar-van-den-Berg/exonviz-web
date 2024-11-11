@@ -3,6 +3,7 @@ server {
 
   add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
 
+  rewrite ^/\.well-known/security.txt https://www.lumc.nl/.well-known/security.txt redirect;
   server_name localhost www.exonviz.rnatherapy.nl exonviz.rnatherapy.nl;
   location / {
     include proxy_params;

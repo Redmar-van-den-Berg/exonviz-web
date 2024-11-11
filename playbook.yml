@@ -111,6 +111,14 @@
         dest: /etc/nginx/sites-enabled/exonviz
         state: link
 
+    - name: Configure logrotate for nginx
+      become: yes
+      ansible.builtin.lineinfile:
+        path: /etc/logrotate.d/nginx
+        regexp: "\tdaily$"
+        line: "\tyearly"
+
+
 
   # Handlers
   handlers:

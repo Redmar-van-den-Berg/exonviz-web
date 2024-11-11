@@ -7,6 +7,8 @@ server {
 
   add_header Content-Security-Policy "frame-ancestors 'none';";
   add_header Content-Security-Policy: "base-uri 'none';";
+  add_header Content-Security-Policy: "frame-src 'none';";
+  add_header Content-Security-Policy: "form-action 'none';";
 
   rewrite ^/\.well-known/security.txt https://www.lumc.nl/.well-known/security.txt redirect;
   server_name localhost www.exonviz.rnatherapy.nl exonviz.rnatherapy.nl;

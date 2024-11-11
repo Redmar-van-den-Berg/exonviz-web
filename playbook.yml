@@ -118,6 +118,13 @@
         regexp: "\tdaily$"
         line: "\tyearly"
 
+    - name: Disable HTTP compression for nginx
+      become: yes
+      ansible.builtin.lineinfile:
+        path: /etc/nginx/nginx.conf
+        regexp: "\tgzip on;"
+        line: "\tgzip off;"
+
 
 
   # Handlers

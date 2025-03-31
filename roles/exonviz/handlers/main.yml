@@ -7,10 +7,10 @@
   service:
     name: "{{ project }}"
     state: restarted
+    enabled: yes
 
 - name: Restart nginx
   become: true
   service:
     name: nginx
     state: restarted
-    enabled: yes

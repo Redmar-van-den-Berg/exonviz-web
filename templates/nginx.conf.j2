@@ -15,6 +15,6 @@ server {
 
   location / {
     include proxy_params;
-    proxy_pass http://unix:{{ exonviz_dir }}/exonviz.sock;
+    proxy_pass http://unix:{{ install_dir }}/{{ project }}.sock;
   }
 }

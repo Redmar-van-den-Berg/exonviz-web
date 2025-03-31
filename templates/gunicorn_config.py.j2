@@ -1,8 +1,8 @@
-bind = "127.0.0.1:5000"
+bind = "127.0.0.1:{{ internal_port }}"
 
 loglevel = "debug"
-errorlog = "{{ exonviz_dir }}/gunicorn_error.log"
-accesslog = "{{ exonviz_dir }}/gunicorn_access.log"
+errorlog = "{{ install_dir }}/gunicorn_error.log"
+accesslog = "{{ install_dir }}/gunicorn_access.log"
 
-# Capture print, logging from the workers and florea2 fprintf's and crashes
+# Capture print, logging from the workers
 capture_output = True

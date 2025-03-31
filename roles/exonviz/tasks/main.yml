@@ -7,10 +7,10 @@
       - python3-setuptools
     state: present
 
-- name: Create exonviz directory
+- name: Create project directory
   become: yes
   file:
-    path: "{{ exonviz_dir }}"
+    path: "{{ install_dir }}"
     state: directory
     mode: '0755'
     owner: "{{ user }}"
@@ -24,16 +24,16 @@
     name:
       - "git+{{ repo_url }}"
       - gunicorn
-    virtualenv: "{{ exonviz_dir }}/venv"
+    virtualenv: "{{ install_dir }}/venv"
     state: forcereinstall
   notify:
     - Restart gunicorn
 
-- name: Copy systemd service for exonviz-web
+- name: Copy systemd service for project
   become: yes
   template:
-    src: exonviz.service.j2
-    dest: /etc/systemd/system/exonviz.service
+    src: "{{ project }}.service.j2"
+    dest: "/etc/systemd/system/{{ project }}.service"
   notify:
     - Reload systemd
     - Restart gunicorn
@@ -42,7 +42,7 @@
   become: yes
   template:
     src: gunicorn_config.py.j2
-    dest: "{{ exonviz_dir }}/gunicorn_config.py"
+    dest: "{{ install_dir }}/gunicorn_config.py"
     owner: "{{ user }}"
   notify:
     - Reload systemd
@@ -52,15 +52,15 @@
   become: yes
   template:
     src: nginx.conf.j2
-    dest: /etc/nginx/sites-available/exonviz.conf
+    dest: "/etc/nginx/sites-available/{{ project }}.conf"
   notify:
     - Restart nginx
   tags:
     - never
 
-- name: Enable exonviz site
+- name: Enable project website
   become: yes
   ansible.builtin.file:
-    src: /etc/nginx/sites-available/exonviz.conf
-    dest: /etc/nginx/sites-enabled/exonviz
+    src: "/etc/nginx/sites-available/{{ project }}.conf"
+    dest: "/etc/nginx/sites-enabled/{{ project }}"
     state: link

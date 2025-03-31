@@ -1,5 +1,7 @@
 repo_url: https://github.com/Redmar-van-den-Berg/exonviz-web.git
-exonviz_dir: /opt/exonviz
+project: exonviz
+install_dir: /opt/exonviz
+internal_port: 5000
 user: dcrt
 flask_secret_key: !vault |
           $ANSIBLE_VAULT;1.1;AES256

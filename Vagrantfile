@@ -6,7 +6,7 @@ Vagrant.configure("2") do |config|
   config.vm.define "exonviz-host"
 
   config.vm.provider :virtualbox do |vb|
-    vb.memory = 500
+    vb.memory = 1500
     vb.cpus = 1
   end
 

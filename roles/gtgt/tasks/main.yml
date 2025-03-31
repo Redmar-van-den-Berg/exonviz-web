@@ -22,9 +22,8 @@
   changed_when: true
   ansible.builtin.pip:
     name:
-      - "git+https://github.com/DCRT-LUMC/GTGT.git"
+      - gtgt[webserver]
       - gunicorn
-      - flask
     virtualenv: "{{ install_dir }}/venv"
     state: forcereinstall
   notify:

@@ -29,15 +29,6 @@
   notify:
     - Restart gunicorn
 
-- name: Copy systemd service for project
-  become: yes
-  template:
-    src: "{{ project }}.service.j2"
-    dest: "/etc/systemd/system/{{ project }}.service"
-  notify:
-    - Reload systemd
-    - Restart gunicorn
-
 - name: Copy gunicorn configuration
   become: yes
   template:
@@ -64,3 +55,19 @@
     src: "/etc/nginx/sites-available/{{ project }}.conf"
     dest: "/etc/nginx/sites-enabled/{{ project }}"
     state: link
+
+- name: Copy systemd service for project
+  become: yes
+  template:
+    src: "{{ project }}.service.j2"
+    dest: "/etc/systemd/system/{{ project }}.service"
+  notify:
+    - Reload systemd
+    - Restart gunicorn
+
+- name: Enable systemd service for project
+  become: true
+  service:
+    name: "{{ project }}"
+    enabled: yes
+    state: started

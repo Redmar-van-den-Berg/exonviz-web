@@ -2,6 +2,12 @@
   become: yes
   command: systemctl daemon-reload
 
+- name: Restart gunicorn
+  become: true
+  service:
+    name: exonviz
+    state: restarted
+
 - name: Restart nginx
   become: true
   service:

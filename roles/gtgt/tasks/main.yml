@@ -24,6 +24,7 @@
     name:
       - "git+https://github.com/DCRT-LUMC/GTGT.git"
       - gunicorn
+      - flask
     virtualenv: "{{ install_dir }}/venv"
     state: forcereinstall
   notify:
@@ -51,7 +52,7 @@
 - name: Copy nginx configuration
   become: yes
   template:
-    src: nginx.conf.j2
+    src: "nginx-{{ project }}.conf.j2"
     dest: "/etc/nginx/sites-available/{{ project }}.conf"
   notify:
     - Restart nginx

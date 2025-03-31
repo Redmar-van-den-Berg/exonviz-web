@@ -9,6 +9,8 @@ WorkingDirectory={{ install_dir }}
 Environment="PATH={{ install_dir }}/venv/bin"
 Environment="FLASK_SECRET_KEY={{ flask_secret_key }}"
 ExecStart={{ install_dir }}/venv/bin/gunicorn --config {{ install_dir }}/gunicorn_config.py --workers 2 --bind unix:exonviz.sock --log-level=debug "exonviz_web.app:app"
+Restart=always
+RestartSec=3
 
 [Install]
 WantedBy=multi-user.target

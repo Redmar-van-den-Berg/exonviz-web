@@ -1,0 +1,66 @@
+- name: Install packages
+  become: yes
+  apt:
+    name:
+      - python3-pip
+      - python3-virtualenv
+      - python3-setuptools
+    state: present
+
+- name: Create project directory
+  become: yes
+  file:
+    path: "{{ install_dir }}"
+    state: directory
+    mode: '0755'
+    owner: "{{ user }}"
+
+- name: Create virtualenv
+  become: yes
+  become_user: "{{ user }}"
+  # Since we use forcereinstall, the venv always changes to the latest version
+  changed_when: true
+  ansible.builtin.pip:
+    name:
+      - "git+https://github.com/DCRT-LUMC/GTGT.git"
+      - gunicorn
+    virtualenv: "{{ install_dir }}/venv"
+    state: forcereinstall
+  notify:
+    - Restart gunicorn
+
+- name: Copy systemd service for project
+  become: yes
+  template:
+    src: "{{ project }}.service.j2"
+    dest: "/etc/systemd/system/{{ project }}.service"
+  notify:
+    - Reload systemd
+    - Restart gunicorn
+
+- name: Copy gunicorn configuration
+  become: yes
+  template:
+    src: gunicorn_config.py.j2
+    dest: "{{ install_dir }}/gunicorn_config.py"
+    owner: "{{ user }}"
+  notify:
+    - Reload systemd
+    - Restart gunicorn
+
+- name: Copy nginx configuration
+  become: yes
+  template:
+    src: nginx.conf.j2
+    dest: "/etc/nginx/sites-available/{{ project }}.conf"
+  notify:
+    - Restart nginx
+  tags:
+    - never
+
+- name: Enable project website
+  become: yes
+  ansible.builtin.file:
+    src: "/etc/nginx/sites-available/{{ project }}.conf"
+    dest: "/etc/nginx/sites-enabled/{{ project }}"
+    state: link

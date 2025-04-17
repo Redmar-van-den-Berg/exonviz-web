@@ -11,7 +11,7 @@ server {
   add_header Content-Security-Policy: "form-action 'none';";
 
   rewrite ^/\.well-known/security.txt https://www.lumc.nl/.well-known/security.txt redirect;
-  server_name localhost2 www.gtgt.rnatherapy.nl gtgt.rnatherapy.nl;
+  server_name localhost2 gtgt.rnatherapy.nl;
 
   location / {
     include proxy_params;

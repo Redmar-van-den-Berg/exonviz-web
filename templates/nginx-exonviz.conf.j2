@@ -11,7 +11,7 @@ server {
   add_header Content-Security-Policy: "form-action 'none';";
 
   rewrite ^/\.well-known/security.txt https://www.lumc.nl/.well-known/security.txt redirect;
-  server_name localhost www.exonviz.rnatherapy.nl exonviz.rnatherapy.nl;
+  server_name localhost exonviz.rnatherapy.nl;
 
   location / {
     include proxy_params;

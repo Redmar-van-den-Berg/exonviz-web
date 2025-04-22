@@ -49,6 +49,20 @@
   tags:
     - never
 
+- name: Create folder for mutalyzer cache
+  become: yes
+  file:
+    path: "{{ mutalyzer_cache }}"
+    state: directory
+    mode: '0755'
+    owner: "{{ user }}"
+
+- name: Copy mutalyzer configuration
+  become: yes
+  template:
+    src: "mutalyzer-config.txt.j2"
+    dest: "{{ install_dir }}/mutalyzer-config.txt"
+
 - name: Enable project website
   become: yes
   ansible.builtin.file:

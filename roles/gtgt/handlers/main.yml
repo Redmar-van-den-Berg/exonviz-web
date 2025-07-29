@@ -13,3 +13,9 @@
   service:
     name: nginx
     state: restarted
+
+- name: Restart gtgt
+  become: true
+  service:
+    name: gtgt
+    start: restarted

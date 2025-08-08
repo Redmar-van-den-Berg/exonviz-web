@@ -28,6 +28,7 @@
     state: forcereinstall
   notify:
     - Restart gunicorn
+    - Restart gtgt
 
 - name: Copy gunicorn configuration
   become: yes

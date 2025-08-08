@@ -18,4 +18,4 @@
   become: true
   service:
     name: gtgt
-    start: restarted
+    state: restarted

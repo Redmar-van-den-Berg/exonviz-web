@@ -1,0 +1,12 @@
+---
+- hosts: all
+  pre_tasks:
+  - name: Update APT cache
+    become: yes
+    apt:
+      update_cache: yes
+      force_apt_get: yes
+  roles:
+    - common
+    - gtgt
+    - exonviz

@@ -15,7 +15,7 @@ import copy
 
 from exonviz import draw_exons, config, Exon
 from exonviz import mutalyzer
-from exonviz.cli import check_input, get_MANE, trim_variants, sort_variants
+from exonviz.cli import check_input, get_MANE, trim_variants
 from werkzeug.utils import secure_filename
 
 # Set up flask
@@ -43,22 +43,13 @@ def cache_fetch_exons(transcript: str) -> Dict[str, Any]:
     return mutalyzer.fetch_exons(no_variants)
 
 
-@functools.cache
-def cache_fetch_variants(transcript: str) -> Dict[str, Any]:
-    """Wrapper to cache calls to mutalyzer"""
-    sorted = sort_variants(transcript)
-    app.logger.info(f"Fetching variants for {sorted} from mutalyzer")
-    return mutalyzer.fetch_variants(sorted)
-
-
 def build_exons(
-    transcript: str, config: Dict[str, Any]
+    hgvs: str, config: Dict[str, Any]
 ) -> Tuple[List[str], List[Exon]]:
-    exons = copy.deepcopy(cache_fetch_exons(transcript))
-    variants = copy.deepcopy(cache_fetch_variants(transcript))
+    exons = copy.deepcopy(cache_fetch_exons(hgvs))
 
     build_exons, dropped_variants = mutalyzer.build_exons(
-        transcript, exons, variants, config
+        hgvs, exons, config
     )
     return dropped_variants, build_exons
 

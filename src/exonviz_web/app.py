@@ -43,14 +43,10 @@ def cache_fetch_exons(transcript: str) -> Dict[str, Any]:
     return mutalyzer.fetch_exons(no_variants)
 
 
-def build_exons(
-    hgvs: str, config: Dict[str, Any]
-) -> Tuple[List[str], List[Exon]]:
+def build_exons(hgvs: str, config: Dict[str, Any]) -> Tuple[List[str], List[Exon]]:
     exons = copy.deepcopy(cache_fetch_exons(hgvs))
 
-    build_exons, dropped_variants = mutalyzer.build_exons(
-        hgvs, exons, config
-    )
+    build_exons, dropped_variants = mutalyzer.build_exons(hgvs, exons, config)
     return dropped_variants, build_exons
 
 

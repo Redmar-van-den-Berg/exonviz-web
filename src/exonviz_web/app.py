@@ -137,6 +137,10 @@ def draw() -> Response:
     # Get the list of variant colors
     figure_config["variantcolors"] = request.args.getlist("variantcolors")
 
+    # Rewrite the transcript, if required. This will also lookup the MANE select
+    # for gene names
+    figure_config["transcript"] = rewrite_transcript(figure_config["transcript"], MANE)
+
     # Cast integer values to int
     for field in ["firstexon", "lastexon", "gap", "height", "width"]:
         figure_config[field] = int(figure_config[field])
